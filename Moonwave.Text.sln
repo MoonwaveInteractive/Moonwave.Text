@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonwave.Text", "Moonwave.Text\Moonwave.Text.csproj", "{1EF406F4-B86C-4379-948D-5A173D0C60AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1EF406F4-B86C-4379-948D-5A173D0C60AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF406F4-B86C-4379-948D-5A173D0C60AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EF406F4-B86C-4379-948D-5A173D0C60AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EF406F4-B86C-4379-948D-5A173D0C60AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4DD50156-5210-4F65-BDEC-CD0EE0E14B14}
+	EndGlobalSection
+EndGlobal
