@@ -90,6 +90,10 @@ namespace Moonwave.Text
         private bool needsBuilt = false;
 
         private Stopwatch stopwatch = new Stopwatch();
+        
+        List<int> columnLengths = new List<int>();
+        
+        int builtTableMaxRowSize;
 
         /// <summary>
         /// Adds a row to the main table.
@@ -162,13 +166,18 @@ namespace Moonwave.Text
         {
             if (Footer.StatsType == FooterStatsType.Advanced)
             {
-                stopwatch.Reset();
-                stopwatch.Start();
+                stopwatch.Restart();
             }
 
             StringBuilder builder = new StringBuilder();
 
             char groupingChar = ' ';
+            
+            for (int i = 0; i < table.Count; i++)
+            {
+                columnLengths.Add(table[i].Aggregate(string.Empty, (max, cur) =>
+                max.Length > cur.Length ? max : cur).Length;
+            }
 
             for (int i = 0; i < entries + 1; i++)
             {
@@ -186,7 +195,7 @@ namespace Moonwave.Text
 
                     if (x < Columns - 1)
                     {
-                        padding = new string(groupingChar, table[x].Max(s => s.Length) - cell.Length + ColumnMargin);
+                        padding = new string(groupingChar, columnLengths[x] - cell.Length + ColumnMargin);
                     }
 
                     builder.Append(cell + padding);
@@ -196,64 +205,11 @@ namespace Moonwave.Text
             }
 
             stopwatch.Stop();
+                                  
+            builtTableMaxRowSize = builtTable.Aggregate(string.Empty, (max, cur) =>
+            max.Length > cur.Length ? max : cur).Length;
         }
-
-        private void StyleHeader()
-        {
-            if (Header.BorderStyle != HeaderBorderStyle.None)
-            {
-                int maxLength = builtTable.Max(s => s.Length);
-
-                StringBuilder builder = new StringBuilder();
-
-                switch (Header.BorderStyle)
-                {
-                    case HeaderBorderStyle.Single:
-                        builtTable.Insert(1, new string('̄', maxLength));
-                        break;
-
-                    case HeaderBorderStyle.ColumnTitle:
-                        for (int i = 0; i < Columns; i++)
-                        {
-                            builder.Append(new string('̄', table[i][0].Length));
-
-                            if (i < Columns - 1)
-                            {
-                                builder.Append(new string(' ', table[i].Max(s => s.Length -
-                                table[i][0].Length + columnMargin)));
-                            }
-                        }
-
-                        builtTable.Insert(1, builder.ToString());
-                        break;
-
-                    case HeaderBorderStyle.Column:
-                        for (int i = 0; i < Columns; i++)
-                        {
-                            builder.Append(new string('̄', table[i].Max(s => s.Length)));
-
-                            if (i < Columns - 1)
-                            {
-                                builder.Append(new string(' ', columnMargin));
-                            }
-                            else
-                            {
-                                builder.Append(new string('̄', maxLength - builder.Length));
-                            }
-                        }
-
-                        builtTable.Insert(1, builder.ToString());
-                        break;
-
-                    case HeaderBorderStyle.Dual:
-                        string divider = new string('̄', maxLength);
-                        builtTable.Insert(0, divider);
-                        builtTable.Insert(2, divider);
-                        break;
-                }
-            }
-        }
-
+                                  
         private void StyleFooter()
         {
             string stats = string.Empty;
@@ -272,11 +228,14 @@ namespace Moonwave.Text
 
             if (Footer.BorderStyle != FooterBorderStyle.None)
             {
-                int dividerLength = builtTable.Max(s => s.Length > stats.Length) ? builtTable.Max(s => s.Length) : stats.Length;
+                if (builtTableMaxRowSize < stats.Length)
+                {
+                    builtTableMaxRowSize = stats.Length;
+                }
 
                 if (Footer.BorderStyle == FooterBorderStyle.Single)
                 {
-                    builtTable.Add(new string('̄', dividerLength));
+                    builtTable.Add(new string('̄', builtTableMaxRowSize));
                     builtTable.Add(stats);
                     
                 }
@@ -284,15 +243,69 @@ namespace Moonwave.Text
                 {
                     if (Footer.StatsType == FooterStatsType.None)
                     {
-                        builtTable.Add(new string('̄', dividerLength));
+                        builtTable.Add(new string('̄', builtTableMaxRowSize));
                     }
                     else
                     {
-                        string divider = new string('̄', dividerLength);
+                        string divider = new string('̄', builtTableMaxRowSize);
                         builtTable.Add(divider);
                         builtTable.Add(stats);
                         builtTable.Add(divider);
                     }
+                }
+            }
+        }
+               
+        private void StyleHeader()                        
+        {
+            if (Header.BorderStyle != HeaderBorderStyle.None)
+            {
+                StringBuilder builder = new StringBuilder();
+
+                switch (Header.BorderStyle)
+                {
+                    case HeaderBorderStyle.Single:
+                        builtTable.Insert(1, new string('̄', builtTableMaxRowSize));
+                        break;
+
+                    case HeaderBorderStyle.ColumnTitle:
+                        for (int i = 0; i < Columns; i++)
+                        {
+                            builder.Append(new string('̄', table[i][0].Length));
+
+                            if (i < Columns - 1)
+                            {
+                                builder.Append(new string(' ', columnLengths[i] -
+                                table[i][0].Length + columnMargin));
+                            }
+                        }
+
+                        builtTable.Insert(1, builder.ToString());
+                        break;
+
+                    case HeaderBorderStyle.Column:
+                        for (int i = 0; i < Columns; i++)
+                        {
+                            builder.Append(new string('̄', columnLengths[i]));
+
+                            if (i < Columns - 1)
+                            {
+                                builder.Append(new string(' ', columnMargin));
+                            }
+                            else
+                            {
+                                builder.Append(new string('̄', builtTableMaxRowSize - builder.Length));
+                            }
+                        }
+
+                        builtTable.Insert(1, builder.ToString());
+                        break;
+
+                    case HeaderBorderStyle.Dual:
+                        string divider = new string('̄', builtTableMaxRowSize);
+                        builtTable.Insert(0, divider);
+                        builtTable.Insert(2, divider);
+                        break;
                 }
             }
         }
