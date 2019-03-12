@@ -176,7 +176,7 @@ namespace Moonwave.Text
             for (int i = 0; i < table.Count; i++)
             {
                 columnLengths.Add(table[i].Aggregate(string.Empty, (max, cur) =>
-                max.Length > cur.Length ? max : cur).Length;
+                max.Length > cur.Length ? max : cur).Length);
             }
 
             for (int i = 0; i < entries + 1; i++)
