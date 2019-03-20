@@ -50,13 +50,13 @@ List<string> failedComponents = new List<string>();
 // of the paths you try to get a value from don't exist or return null.
 // You would add that bad path to this list during runtime. But for right
 // now, we will just do it manually for the sake of the example.
-table.Add("Root\\CIMV2 Win32_Processor Name");
-table.Add("Root\\CIMV2 Win32_TemperatureProbe CurrentReading");
-table.Add("Root\\CIMV2 Win32_BIOS Version");
-table.Add("Root\\CIMV2 Win32_PhysicalMemory PositionInRow");
-table.Add("Root\\CIMV2 Win32_PhysicalMemory Model");
-table.Add("Root\\CIMV2 Win32_PhysicalMemory MaxVoltage");
-table.Add("Root\\CIMV2 Win32_SerialPort DeviceID");
+failedComponents.Add("Root\\CIMV2 Win32_Processor Name");
+failedComponents.Add("Root\\CIMV2 Win32_TemperatureProbe CurrentReading");
+failedComponents.Add("Root\\CIMV2 Win32_BIOS Version");
+failedComponents.Add("Root\\CIMV2 Win32_PhysicalMemory PositionInRow");
+failedComponents.Add("Root\\CIMV2 Win32_PhysicalMemory Model");
+failedComponents.Add("Root\\CIMV2 Win32_PhysicalMemory MaxVoltage");
+failedComponents.Add("Root\\CIMV2 Win32_SerialPort DeviceID");
 
 Table table = new Table("[Namespace:]", "[Class:]", "[Method:]");
 
