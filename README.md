@@ -7,6 +7,8 @@ Moonwave.Text is a library in the making that allows you to quickly format text.
 * Creating table formatted text.
 
 ## Creating a table
+![Table examples.](https://www.dl.dropboxusercontent.com/s/v76vnkgrkbq0q3f/Photo%20Mar%2019%2C%2010%2026%2007%20PM.jpg?dl=0)
+
 Creating customizable tables is fast and easy.
 
 Some of the things you can do with a table inlude:
